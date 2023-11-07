@@ -6,6 +6,8 @@ import __dirname from "./utils.js";
 import viewsRouter from "./routes/views.router.js";
 import { Server } from "socket.io";
 import { ProductManager } from "./managers/productManager.js";
+import fs from 'fs';
+import path from 'path';
 
 const store = new ProductManager();
 const PORT = 8080;
@@ -32,14 +34,30 @@ socketServer.on("connection", async (socket) => {
   console.log(products)
   socket.emit("products", products);
   
-  socket.on("productAdded", (newProduct) => {
-    products.push(newProduct);
-    console.log(newProduct)
-    socketServer.emit("productAdded", newProduct);
-});
+ socket.on("addProduct", (newProduct) => {
+  const filePath = path.join(__dirname, 'data', 'products.json');
+ 
+  fs.readFile(filePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error("Error al leer el archivo 'products.json':", err);
+    return;
+  }
 
-});
+  const products = JSON.parse(data);
+  products.push(newProduct);
+  const updatedData = JSON.stringify(products);
 
+  fs.writeFile(filePath, updatedData, 'utf8', (err) => {
+      if (err) {
+        console.error("Error al escribir en el archivo 'products.json'");
+        return;
+      }
+      console.log("Nuevo producto agregado exitosamente");
+    });
+  socketServer.emit("productAdded", newProduct);
+  });
+});
+});
 
 
 export default socketServer;

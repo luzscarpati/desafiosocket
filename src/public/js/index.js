@@ -1,4 +1,5 @@
 const socket = io();
+
 socket.on("products", (data) => {
   const listProduct = document.getElementById("listProducts");
   listProduct.innerHTML = " ";
@@ -38,19 +39,9 @@ const SEND = (event) => {
   const price = dataForm.get('price');
   const code = dataForm.get('code');
   const stock = dataForm.get('stock');
-  const product = { title, description, price, code, stock };
+  const newProduct = { title, description, price, code, stock };
 
-  fetch('/api/products', {
-    method: "POST",
-    body: JSON.stringify(product),
-    headers: { "Content-type": "application/json" }
-  })
-    .then(response => response.json())
-    .then(newProduct => {
-
-      socket.emit("addProduct", newProduct);
-    })
-    .catch(error => {
-      console.log("Error!: " + error);
-    });
+  socket.emit("addProduct", newProduct);
+  console.log(newProduct);
 };
+
