@@ -1,0 +1,22 @@
+[
+    {
+        "id": 0,
+        "title": "Ejemplo de producto",
+        "description": "Descripción de ejemplo",
+        "code": "12345",
+        "price": 19.99,
+        "stock": 100,
+        "category": "Ejemplo"
+    },
+    {
+        "id": 1,
+        "status": true,
+        "title": "Ejemplo de producto",
+        "description": "Descripción de ejemplo",
+        "code": "12845",
+        "price": 199.99,
+        "stock": 100,
+        "category": "Ejemplo"
+    }
+   
+]
